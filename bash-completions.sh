@@ -1,21 +1,40 @@
 #!/bin/bash
 
 # Cloud endpoint URL
-CLOUD_ENDPOINT="https://your-cloud-endpoint.com/ai-completion"
+CLOUD_ENDPOINT="http://localhost:8000/chat"
+API_KEY="****"
+
 
 # Prompt for token at the time of sourcing this script
-echo -n "Enter token for 'f': "
-read -s F_TOKEN
+echo -n "Enter API key: "
+read -s API_KEY
 echo
 echo "Token set for session."
 
+# Base function to get completion using curl
+# TODO: Look at replacing the uggly HEREDOC EOF 
+_fetch_completions() {
+
+    # Prepare the JSON payload
+    read -r -d '' PAYLOAD <<EOF
+    {
+    "user_message": "$1"    
+    }
+EOF
+
+    # Make the POST request
+    curl -X POST "$CLOUD_ENDPOINT" \
+        -H "Content-Type: application/json" \
+        -H "x-api-key: $API_KEY" \
+        -d "$PAYLOAD"
+}
 # Function to fetch completions from the cloud using the token
 _fetch_completions_from_cloud() {
     local cur=${COMP_WORDS[*]:1}  # Get all words typed so far, excluding the command itself
 
     # Make a request to the cloud endpoint. Adjust this as needed for your API.
     # Here, we're sending the current command line input as a query parameter.
-    curl -s -G --data-urlencode "input=$cur" --header "Authorization: Bearer $F_TOKEN" "$CLOUD_ENDPOINT"
+    _f_completion "$cur"
 }
 
 # The actual completion function
@@ -42,6 +61,7 @@ ai() {
             read cmd_to_augment
             echo "Augmenting command: $cmd_to_augment"
             # Send $cmd_to_augment to backend for augmentation
+            _fetch_completions "$cmd_to_augment" >> augment_history.txt 
             ;;
         ask)
             echo "Enter your question: "
