@@ -31,3 +31,59 @@ _f_completion() {
 # Register the completion function for the command `f`
 complete -F _f_completion f
 
+ai() {
+    case "$1" in
+        login)
+            echo "Authenticating against the AI endpoint..."
+            # Authentication logic goes here
+            ;;
+        aug|augment)
+            echo "Enter command to augment: "
+            read cmd_to_augment
+            echo "Augmenting command: $cmd_to_augment"
+            # Send $cmd_to_augment to backend for augmentation
+            ;;
+        ask)
+            echo "Enter your question: "
+            read question
+            echo "Asking: $question"
+            # Send $question to backend and display the answer
+            ;;
+        run)
+            if [[ -n "$2" ]]; then
+                echo "Running command from augment history: $2"
+                # Logic to execute the command from augment history
+            else
+                echo "No command specified."
+            fi
+            ;;
+        *)
+            echo "Usage: ai [login|augment|ask|run]"
+            ;;
+    esac
+}
+
+_ai_completion() {
+    local current=${COMP_WORDS[COMP_CWORD]}
+    local prev=${COMP_WORDS[COMP_CWORD-1]}
+
+    case "$prev" in
+        ai)
+            local opts="login aug augment ask run"
+            COMPREPLY=($(compgen -W "${opts}" -- ${current}))
+            ;;
+        run)
+            # Dynamically generate completion options based on the augment history file
+            local commands=$(cat augment_history.txt)  # Assuming augment_history.txt contains one command per line
+            COMPREPLY=($(compgen -W "${commands}" -- ${current}))
+            ;;
+        *)
+            COMPREPLY=()
+            ;;
+    esac
+}
+
+# Register the completion function
+complete -F _ai_completion ai
+
+
