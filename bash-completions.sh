@@ -93,9 +93,21 @@ _ai_completion() {
             COMPREPLY=($(compgen -W "${opts}" -- ${current}))
             ;;
         run)
-            # Dynamically generate completion options based on the augment history file
-            local commands=$(cat augment_history.txt)  # Assuming augment_history.txt contains one command per line
-            COMPREPLY=($(compgen -W "${commands}" -- ${current}))
+            # Initialize an empty array for completion options
+            local completions=()
+            
+            # Read the augment_history.txt file line by line
+            while IFS= read -r line; do
+                # If the current input matches the start of a line, add that line to the completions
+                if [[ "$line" == "$current"* ]]; then
+                    completions+=("$line")
+                fi
+            done < "augment_history.txt"  # Ensure this path is correct
+            
+            # Apply the completions
+            COMPREPLY=("${completions[@]}")
+            # Optionally, use compopt to adjust completion behavior, such as disabling space after completion
+            # compopt -o nospace
             ;;
         *)
             COMPREPLY=()
@@ -105,5 +117,6 @@ _ai_completion() {
 
 # Register the completion function
 complete -F _ai_completion ai
+
 
 
