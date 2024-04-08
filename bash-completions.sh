@@ -23,7 +23,7 @@ _fetch_completions() {
 EOF
 
     # Make the POST request
-    curl -X POST "$CLOUD_ENDPOINT" \
+    curl -s -X POST "$CLOUD_ENDPOINT" \
         -H "Content-Type: application/json" \
         -H "x-api-key: $API_KEY" \
         -d "$PAYLOAD"
