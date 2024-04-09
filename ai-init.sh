@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version: 0.01
+# Version: 0.02
 
 ENDPOINT="https://api.frippe.com/v1"
 
