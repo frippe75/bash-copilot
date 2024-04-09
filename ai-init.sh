@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Version: 0.01
+
 ENDPOINT="https://api.frippe.com/v1"
 
 printf "Please enter your username: "
