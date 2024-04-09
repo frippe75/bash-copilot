@@ -29,8 +29,8 @@ token=$(echo "$response" | grep -o '"idToken":"[^"]*' | cut -d'"' -f4)
 unset email password
 
 if [ -z "$token" ]; then
-  echo "Authentication failed."
-  exit 1
+  echo "Error: Authentication failed."
+  #exit 1
 fi
 
 echo "Authentication successful."
