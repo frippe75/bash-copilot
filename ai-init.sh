@@ -55,7 +55,8 @@ if [ -s script.sh ]; then
     source script.sh
     rm script.sh  # Clean up the script file after execution
 else
-    echo "The script file is empty or not found."
-    exit 1
+    echo "Error: The script file is empty or not found."
+    # Exit will exit the shell if sourced
+    #exit 1
 fi
 
