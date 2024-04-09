@@ -2,9 +2,9 @@
 
 ENDPOINT="https://api.frippe.com/v1"
 
-echo "Please enter your username:"
+printf "Please enter your username: "
 read -r username
-echo "Please enter your password:"
+printf "Please enter your password: "
 read -sr password
 echo
 
