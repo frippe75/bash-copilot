@@ -37,7 +37,9 @@ do_authentication() {
     # Check if the response contains "idToken"
     if echo "$response" | grep -q "idToken"; then
         # Extract the ID token using awk for platform independence since grep could cause issues on some systems
-        token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}')
+        #token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}')
+        #token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}' | tr -d ' ')
+        token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}' | sed 's/^ *//;s/ *$//' | tr -d '\n')
 
         echo "Authentication successful."
         # Proceed with the rest of your script
@@ -61,12 +63,13 @@ inject_script() {
     # Fetch the base64 encoded script 
     source <(curl -sL $ENDPOINT \
                 -X POST \
-                -H "Authorization: Bearer $token" \
+                -H "Authorization: Bearer ${token}" \
                 -H "Content-Type: application/json" \
                 --data-binary "{\"context\":\"$context\"}" | base64 -d)
 }
 
 final_steps() {
+    :
     #echo "Final steps or cleanup..."
 }
 
