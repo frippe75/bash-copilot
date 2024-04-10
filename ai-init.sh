@@ -11,8 +11,12 @@ API_KEY="AIzaSyAfEt2dv_-RFIIf2BiY_n1419lQX5YNti0"
 # Firebase Auth endpoint for email & password authentication
 FIREBASE_AUTH_ENDPOINT="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}"
 
-# Your FastAPI endpoint for fetching the script
-SCRIPT_ENDPOINT="http://localhost:8000/script"
+# Cloud endpoint URL
+if [[ -z "$DEV" ]]; then
+    SCRIPT_ENDPOINT="https://bash-ai-backend-service-bzr66ksiqq-ey.a.run.app"
+else
+    source .env
+fi
 
 handle_error() {
     echo "Error: $1"
