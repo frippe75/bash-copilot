@@ -71,7 +71,7 @@ inject_script() {
                 -H "Content-Type: application/json" \
                 --data-binary "{\"context\":\"$context\"}" | base64 -d)
 
-    echo AI4SHELL loaded
+    echo AI4SHELL loaded for context $context
 }
 
 final_steps() {
