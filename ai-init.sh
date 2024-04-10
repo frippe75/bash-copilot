@@ -70,6 +70,8 @@ inject_script() {
                 -H "Authorization: Bearer ${token}" \
                 -H "Content-Type: application/json" \
                 --data-binary "{\"context\":\"$context\"}" | base64 -d)
+
+    echo AI4SHELL loaded
 }
 
 final_steps() {
