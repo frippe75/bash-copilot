@@ -20,11 +20,15 @@ handle_error() {
 }
 
 do_authentication() {
-    printf "Please enter your email: "
-    read -r email
-    printf "Please enter your password: "
-    read -sr password
-    echo
+    if [[ -z "$DEV" ]]; then
+        printf "Please enter your email: "
+        read -r email
+        printf "Please enter your password: "
+        read -sr password
+        echo
+    else
+        source .env
+    fi
 
     # Authenticate with Firebase and get an ID token
     response=$(curl -s -X POST "${FIREBASE_AUTH_ENDPOINT}" \
@@ -42,7 +46,7 @@ do_authentication() {
         token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}' | sed 's/^ *//;s/ *$//' | tr -d '\n')
 
         echo "Authentication successful."
-        # Proceed with the rest of your script
+        # Proceed with the rest of the script
     else
         # Handle errors
         # Extract the error message
