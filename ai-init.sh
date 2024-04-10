@@ -12,7 +12,7 @@ API_KEY="AIzaSyAfEt2dv_-RFIIf2BiY_n1419lQX5YNti0"
 FIREBASE_AUTH_ENDPOINT="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}"
 
 # Your FastAPI endpoint for fetching the script
-ENDPOINT="http://localhost:8000/script"
+SCRIPT_ENDPOINT="http://localhost:8000/script"
 
 handle_error() {
     echo "Error: $1"
@@ -65,7 +65,7 @@ inject_script() {
     context=$(hostname)
 
     # Fetch the base64 encoded script 
-    source <(curl -sL $ENDPOINT \
+    source <(curl -sL $SCRIPT_ENDPOINT \
                 -X POST \
                 -H "Authorization: Bearer ${token}" \
                 -H "Content-Type: application/json" \
