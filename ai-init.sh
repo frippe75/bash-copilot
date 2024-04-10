@@ -67,7 +67,7 @@ inject_script() {
 }
 
 final_steps() {
-    echo "Final steps or cleanup..."
+    #echo "Final steps or cleanup..."
 }
 
 # Execute the defined functions
