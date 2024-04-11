@@ -80,6 +80,8 @@ do_authentication() {
     # Clear email and password from memory
     unset email password
 
+    echo
+
     # Check if the response contains "idToken"
     if echo "$response" | grep -q "idToken"; then
         # Extract the ID token using awk for platform independence since grep could cause issues on some systems
