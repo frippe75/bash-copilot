@@ -18,9 +18,47 @@ else
     source .env
 fi
 
+
+# Check for terminal color support
+if tput colors > /dev/null 2>&1; then
+    num_colors=$(tput colors)
+    if [ "$num_colors" -ge 8 ]; then
+        # debug "Terminal supports colors"
+        COLOR_SUPPORT=1
+    else
+        COLOR_SUPPORT=0
+        # debug "Terminal does not support colors"
+    fi
+else
+    COLOR_SUPPORT=0
+    # debug "Cannot determine color support with tput"
+fi
+
+
 handle_error() {
-    echo "Error: $1"
+    echo_color red "Error: $1"
     continue_script=false
+}
+
+echo_color() {
+    if [[ "$COLOR_SUPPORT" -eq 1 ]]; then
+        case "$1" in
+            red)
+                echo -e "\033[0;31m$2\033[0m"
+                ;;
+            green)
+                echo -e "\033[0;32m$2\033[0m"
+                ;;
+            yellow)
+                echo -e "\033[0;33m$2\033[0m"
+                ;;
+            *)
+                echo "$2"
+                ;;
+        esac
+    else
+        echo "$2"
+    fi      
 }
 
 do_authentication() {
@@ -49,7 +87,7 @@ do_authentication() {
         #token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}' | tr -d ' ')
         token=$(echo "$response" | awk -F'"idToken":' '{print $2}' | awk -F'"' '{print $2}' | sed 's/^ *//;s/ *$//' | tr -d '\n')
 
-        echo "Authentication successful."
+        echo_color green "Authentication successful."
         # Proceed with the rest of the script
     else
         # Handle errors
@@ -75,7 +113,8 @@ inject_script() {
                 -H "Content-Type: application/json" \
                 --data-binary "{\"context\":\"$context\"}" | base64 -d)
 
-    echo Oneliners.io loaded for context $context
+    printf Oneliners.io loaded for context 
+    echo_color yellow $context
     echo 
     echo Tip: To get started type ol \<tab\> for completion
 }
