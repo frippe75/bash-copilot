@@ -66,7 +66,7 @@ inject_script() {
     fi
 
     # Obtain the context, which is the hostname in this case
-    context=$(hostname)
+    context=$(whoami)@$(hostname -f)
 
     # Fetch the base64 encoded script 
     source <(curl -sL $SCRIPT_ENDPOINT \
@@ -77,7 +77,7 @@ inject_script() {
 
     echo Oneliners.io loaded for context $context
     echo 
-    echo Tip: To get started type ol <tab> for completion
+    echo Tip: To get started type ol \<tab\> for completion
 }
 
 final_steps() {
