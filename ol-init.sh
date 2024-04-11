@@ -97,6 +97,8 @@ do_authentication() {
         error_message=$(echo "$response" | grep -o '"message":"[^"]*' | cut -d'"' -f4)
         handle_error "Authentication failed with error: $error_message"
     fi
+
+    echo
 }
 
 inject_script() {
