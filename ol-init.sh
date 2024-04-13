@@ -39,24 +39,18 @@ handle_error() {
 }
 
 echo_color() {
-    if [[ "$COLOR_SUPPORT" -eq 1 ]]; then
-        case "$1" in
-            red)
-                echo -e "\033[0;31m$2\033[0m"
-                ;;
-            green)
-                echo -e "\033[0;32m$2\033[0m"
-                ;;
-            yellow)
-                echo -e "\033[0;33m$2\033[0m"
-                ;;
-            *)
-                echo "$2"
-                ;;
-        esac
-    else
-        echo "$2"
-    fi      
+    local color_code="$1"
+    local message="$2"
+    case $color_code in
+        red) color_code="\033[31m" ;;
+        green) color_code="\033[32m" ;;
+        yellow) color_code="\033[33m" ;;
+        blue) color_code="\033[34m" ;;
+        purple) color_code="\033[35m" ;;
+        cyan) color_code="\033[36m" ;;
+        *) color_code="\033[0m" ;;  # Default to no color if not specified
+    esac
+    echo -e "${color_code}${message}\033[0m"
 }
 
 do_authentication() {
