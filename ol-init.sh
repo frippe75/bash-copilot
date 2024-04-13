@@ -5,6 +5,14 @@
 # Initialize script continuation flag
 continue_script=true
 
+# Define color codes
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+CYAN="\033[36m"
+RESET="\033[0m"
+
 # Firebase project's Web API Key
 API_KEY="AIzaSyAfEt2dv_-RFIIf2BiY_n1419lQX5YNti0"
 
@@ -113,7 +121,7 @@ inject_script() {
     echo_color yellow $context
     echo 
     printf "  Tip to get started: "
-    echo_color yellow "$ ol <tab>  "
+    echo_color yellow "$ ol help  "
     echo
 }
 
