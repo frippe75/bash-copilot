@@ -13,11 +13,10 @@ FIREBASE_AUTH_ENDPOINT="https://identitytoolkit.googleapis.com/v1/accounts:signI
 
 # Cloud endpoint URL
 if [[ -z "$DEV" ]]; then
-    SCRIPT_ENDPOINT="https://bash-ai-backend-service-bzr66ksiqq-ey.a.run.app"
+    SCRIPT_ENDPOINT="https://bash-ai-backend-service-bzr66ksiqq-ey.a.run.app/script"
 else
     source .env
 fi
-
 
 # Check for terminal color support
 if tput colors > /dev/null 2>&1; then
@@ -33,7 +32,6 @@ else
     COLOR_SUPPORT=0
     # debug "Cannot determine color support with tput"
 fi
-
 
 handle_error() {
     echo_color red "Error: $1"
@@ -120,7 +118,9 @@ inject_script() {
     printf "Oneliners.io loaded for context "
     echo_color yellow $context
     echo 
-    echo Tip: To get started type ol \<tab\> for completion
+    echo  Tip to get started: 
+    echo_color yellow $ ol \<tab\>  (...to complete)
+    echo
 }
 
 final_steps() {
