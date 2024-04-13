@@ -115,11 +115,11 @@ inject_script() {
                 -H "Content-Type: application/json" \
                 --data-binary "{\"context\":\"$context\"}" | base64 -d)
 
-    printf "Oneliners.io loaded for context "
+    printf "  Oneliners.io loaded for context "
     echo_color yellow $context
     echo 
-    echo  Tip to get started: 
-    echo_color yellow $ ol \<tab\>  (...to complete)
+    printf "  Tip to get started: "
+    echo_color yellow "$ ol <tab>  "
     echo
 }
 
