@@ -61,7 +61,7 @@ echo_color() {
     echo -e "${color_code}${message}\033[0m"
 }
 
-do_authentication() {
+_ol_do_authentication() {
     if [[ -z "$DEV" ]]; then
         printf "Please enter your email: "
         read -r email
@@ -101,7 +101,7 @@ do_authentication() {
     echo
 }
 
-inject_script() {
+_ol_inject_script() {
     # Exit if a previous error occurred
     if [[ "$continue_script" == false ]]; then
         return
@@ -116,22 +116,9 @@ inject_script() {
                 -H "Authorization: Bearer ${token}" \
                 -H "Content-Type: application/json" \
                 --data-binary "{\"context\":\"$context\"}" | base64 -d)
-
-    printf "  Oneliners.io loaded for context "
-    echo_color yellow $context
-    echo 
-    printf "  Tip to get started: "
-    echo_color yellow "$ ol help  "
-    echo
-}
-
-final_steps() {
-    :
-    #echo "Final steps or cleanup..."
 }
 
 # Execute the defined functions
-do_authentication
-inject_script
-# Final steps are called regardless of script continuation status to ensure cleanup
-final_steps
+_ol_do_authentication
+_ol_inject_script
+
