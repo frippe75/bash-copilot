@@ -110,12 +110,33 @@ _ol_inject_script() {
     # Obtain the context, which is the hostname in this case
     context=$(whoami)@$(hostname -f)
 
-    # Fetch the base64 encoded script 
-    source <(curl -sL $SCRIPT_ENDPOINT \
-                -X POST \
-                -H "Authorization: Bearer ${token}" \
-                -H "Content-Type: application/json" \
-                --data-binary "{\"context\":\"$context\"}" | base64 -d)
+    # Initial request with a connection timeout
+    response=$(curl -sL $SCRIPT_ENDPOINT \
+        -X POST \
+        -H "Authorization: Bearer ${token}" \
+        -H "Content-Type: application/json" \
+        --data-binary "{\"context\":\"$context\"}" \
+        --connect-timeout 1)
+
+    # Check if the initial request was successful
+    if [[ -z "$response" ]]; then
+        echo_color yellow "Taking longer than expected, waiting for cloud resources to come online..."
+        # Retry without the connection timeout
+        response=$(curl -sL $SCRIPT_ENDPOINT \
+            -X POST \
+            -H "Authorization: Bearer ${token}" \
+            -H "Content-Type: application/json" \
+            --data-binary "{\"context\":\"$context\"}")
+    fi
+
+    # Handle the case where the second attempt fails
+    if [[ -z "$response" ]]; then
+        handle_error "Failed to obtain script from server after retry."
+        return
+    fi
+
+    # Decode and source the received script if successful
+    echo "$response" | base64 -d | source /dev/stdin
 }
 
 # Execute the defined functions
