@@ -71,7 +71,7 @@ _ol_warm_up_service() {
 _ol_do_authentication() {
     if [[ -z "$DEV" ]]; then
         # Warm up cloud services before taking user input
-    	warm_up_service
+    	_ol_warm_up_service
 
         printf "Please enter your email: "
         read -r email
