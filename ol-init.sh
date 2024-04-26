@@ -63,8 +63,16 @@ echo_color() {
 }
 
 _ol_warm_up_service() {
-    echo_color cyan "Contacting cloud services to wake them up..."
-    curl -s "$VERSION_ENDPOINT" >/dev/null  # Call version endpoint to initialize the service
+    #echo_color cyan "Contacting cloud services to wake them up..."
+
+    # Disable job control messages
+    set +m
+
+    # Run curl in a subshell in the background
+    (curl -s "$VERSION_ENDPOINT" > /dev/null 2>&1 &)
+
+    # Re-enable job control messages if needed elsewhere in the script
+    set -m
 }
 
 
